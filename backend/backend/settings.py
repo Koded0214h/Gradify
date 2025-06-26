@@ -30,7 +30,7 @@ DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'your-app-name.onrender.com').split(',')
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'gradify-backend-42j1.onrender.com/').split(',')
 CORS_ALLOW_ALL_ORIGINS = True  # or set up only your frontend URL
 
 
