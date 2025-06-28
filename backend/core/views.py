@@ -28,17 +28,45 @@ class RegisterView(generics.CreateAPIView):
     serializer_class = RegisterSerializer
     permission_classes = [AllowAny]
 
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if not serializer.is_valid():
+            print("❌ Serializer Errors:", serializer.errors)
+            return Response(serializer.errors, status=400)
+        try:
+            self.perform_create(serializer)
+        except Exception as e:
+            print("🔥 Exception in register:", str(e))
+            return Response({"error": str(e)}, status=500)
+        return Response(serializer.data, status=201)
+
 
 class LoginView(APIView):
     permission_classes = [AllowAny]
 
     def post(self, request):
-        username = request.data.get("username")
+        matric_number = request.data.get("matric_number")
         password = request.data.get("password")
-        user = authenticate(username=username, password=password)
 
+        # Check for missing fields
+        field_errors = {}
+        if not matric_number:
+            field_errors["matric_number"] = "Matric number is required."
+        if not password:
+            field_errors["password"] = "Password is required."
+        if field_errors:
+            return Response(field_errors, status=400)
+
+        # Check if user exists
+        try:
+            user_obj = CustomUser.objects.get(matric_number=matric_number)
+        except CustomUser.DoesNotExist:
+            return Response({"matric_number": "No user with this matric number."}, status=400)
+
+        # Authenticate
+        user = authenticate(matric_number=matric_number, password=password)
         if not user:
-            return Response({"error": "Invalid credentials"}, status=401)
+            return Response({"password": "Incorrect password."}, status=400)
 
         token, _ = Token.objects.get_or_create(user=user)
         return Response({
@@ -70,6 +98,24 @@ class CreateAssignmentView(generics.CreateAPIView):
     queryset = Assignment.objects.all()
     serializer_class = CreateAssignmentSerializer
     permission_classes = [IsAuthenticated, IsLecturer]
+
+
+class UpdateAssignmentStatusView(APIView):
+    permission_classes = [IsAuthenticated, IsLecturer]
+
+    def post(self, request, pk):
+        assignment = get_object_or_404(Assignment, pk=pk)
+        is_pending = request.data.get('is_pending', True)
+        
+        assignment.is_pending = is_pending
+        assignment.save()
+        
+        return Response({
+            'id': assignment.id,
+            'title': assignment.title,
+            'is_pending': assignment.is_pending,
+            'status': 'pending' if assignment.is_pending else 'active'
+        }, status=200)
 
 
 # --------------------

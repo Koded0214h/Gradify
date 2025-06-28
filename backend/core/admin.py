@@ -11,4 +11,6 @@ from .models import Course, Assignment, CustomUser
 #     due_date='2025-07-01 23:59'
 # )
 
-
+admin.site.register(CustomUser)
+admin.site.register(Course)
+admin.site.register(Assignment)
