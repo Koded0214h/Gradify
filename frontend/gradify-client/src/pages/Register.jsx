@@ -44,6 +44,7 @@ const RegisterPage = () => {
       const last_name = rest.length > 0 ? rest.join(' ') : '-'; // Ensure last_name is never blank
       const payload = {
         email,
+        username: email, // Add this line to ensure username is set
         first_name: first_name || '-', // Ensure first_name is never blank
         last_name,
         password,
