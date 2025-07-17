@@ -57,7 +57,7 @@ const RegisterPage = () => {
         body: JSON.stringify(payload),
       });
       // On success, log in the user
-      const loginResult = await login(email, password, role);
+      const loginResult = await login(role === "student" ? matricNumber : email, password, role);
       if (loginResult.success) {
         if (role === "student") {
           navigate("/student/assignments");
