@@ -1,0 +1,135 @@
+.submission-history-container {
+  max-width: 900px;
+  margin: 2rem auto;
+  background: #f8fafc;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(123,44,191,0.07);
+  padding: 2.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.submission-history-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #3d246c;
+  margin-bottom: 2rem;
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+.submission-history-loading,
+.submission-history-error,
+.submission-history-empty {
+  text-align: center;
+  padding: 2rem 0;
+  color: #64748b;
+  font-size: 1.1rem;
+}
+
+.submission-history-error {
+  color: #ef4444;
+}
+
+.submission-history-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.submission-history-card {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 2px 12px rgba(123,44,191,0.08);
+  padding: 1.5rem 1.5rem 1.2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.submission-history-card:hover {
+  box-shadow: 0 8px 32px rgba(123,44,191,0.13);
+  transform: translateY(-2px) scale(1.01);
+}
+
+.submission-history-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.7rem;
+}
+.submission-history-assignment {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #7b2cbf;
+}
+.submission-history-status {
+  padding: 0.25rem 1rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-left: 1rem;
+  background: #64748b;
+}
+.submission-history-status.submitted {
+  background: #22c55e;
+}
+.submission-history-status.graded {
+  background: #6366f1;
+}
+.submission-history-status.pending {
+  background: #f59e0b;
+}
+
+.submission-history-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.2rem;
+  font-size: 1rem;
+  color: #444;
+  margin-top: 0.2rem;
+}
+.submission-history-details > div {
+  min-width: 180px;
+}
+
+@media (max-width: 700px) {
+  .submission-history-container {
+    padding: 1rem 0.2rem;
+  }
+  .submission-history-card {
+    padding: 1rem 0.7rem 1rem 0.7rem;
+  }
+  .submission-history-details {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .submission-history-title {
+    font-size: 1.1rem;
+    margin-bottom: 0.7rem;
+  }
+  .submission-history-card {
+    padding: 0.7rem 0.3rem 0.7rem 0.3rem;
+  }
+  .submission-history-assignment {
+    font-size: 1rem;
+  }
+  .submission-history-status {
+    font-size: 0.8rem;
+    padding: 0.18rem 0.7rem;
+  }
+  .submission-history-details {
+    font-size: 0.93rem;
+    gap: 0.3rem;
+  }
+  .submission-history-details > div {
+    min-width: 120px;
+  }
+} 

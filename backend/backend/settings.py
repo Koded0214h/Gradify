@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'core',
     'rest_framework',
     'rest_framework.authtoken',
+    'drf_spectacular',
     'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -71,8 +72,16 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
-    ]
+    ],
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Gradify API',
+    'DESCRIPTION': 'API for student and lecturer grading and assignment tools',
+    'VERSION': '1.0.0',
+}
+
 
 
 TEMPLATES = [
@@ -163,6 +172,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+CORS_ALLOW_ALL_ORIGINS = True
 
 # User model
 AUTH_USER_MODEL = 'core.CustomUser'

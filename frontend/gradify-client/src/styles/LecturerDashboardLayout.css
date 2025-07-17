@@ -1,0 +1,82 @@
+.lecturer-layout-container {
+  min-height: 100vh;
+  display: flex;
+  background: #f7f7fa;
+}
+
+.lecturer-sidebar {
+  width: 240px;
+  background: #fff;
+  border-right: 1px solid #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 1rem;
+  min-height: 100vh;
+}
+
+.lecturer-sidebar-title {
+  margin-bottom: 2rem;
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: #7b2cbf;
+  letter-spacing: 1px;
+}
+
+.lecturer-sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.lecturer-sidebar-link {
+  padding: 0.7rem 1.2rem;
+  border-radius: 8px;
+  font-weight: 500;
+  color: #444;
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s;
+  margin-bottom: 2px;
+}
+.lecturer-sidebar-link.active,
+.lecturer-sidebar-link:hover {
+  background: #ede9fe;
+  color: #7b2cbf;
+}
+
+.lecturer-sidebar-spacer {
+  flex-grow: 1;
+}
+
+.lecturer-main-content {
+  flex: 1;
+  padding: 2.5rem 2rem;
+  overflow-y: auto;
+  background: #f7f7fa;
+  min-height: 100vh;
+}
+
+@media (max-width: 900px) {
+  .lecturer-layout-container {
+    flex-direction: column;
+  }
+  .lecturer-sidebar {
+    width: 100%;
+    min-height: unset;
+    flex-direction: row;
+    align-items: center;
+    padding: 1rem;
+    border-right: none;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  .lecturer-sidebar-title {
+    margin-bottom: 0;
+    margin-right: 2rem;
+  }
+  .lecturer-sidebar-nav {
+    flex-direction: row;
+    gap: 1rem;
+  }
+  .lecturer-main-content {
+    padding: 1.5rem 0.5rem;
+  }
+} 

@@ -129,6 +129,10 @@ class CreateSubmissionView(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
+        assignment = serializer.validated_data['assignment']
+        if Submission.objects.filter(student=self.request.user, assignment=assignment).exists():
+            from rest_framework import serializers
+            raise serializers.ValidationError("You have already submitted this assignment.")
         serializer.save(student=self.request.user)
         # Optional: trigger auto-grade here
 
@@ -171,6 +175,7 @@ class GradeSubmissionView(APIView):
 
                 score, feedback = grade_with_gemini(
                     assignment_title=submission.assignment.title,
+                    assignment_instructions=submission.assignment.instructions,
                     code=code,
                     max_score=submission.assignment.total_marks
                 )

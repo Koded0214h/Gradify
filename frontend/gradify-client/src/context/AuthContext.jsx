@@ -1,79 +1,55 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
-
-const useMock = import.meta.env.VITE_USE_MOCK === "true";
+import { createContext, useContext, useState } from 'react';
+import { apiFetch } from '../api';
 
 const AuthContext = createContext();
 
-export const AuthProvider = ({ children }) => {
-  const [auth, setAuth] = useState(() => {
-    const stored = localStorage.getItem("auth");
-    return stored ? JSON.parse(stored) : { token: null, role: null, user: null };
+export function AuthProvider({ children }) {
+  const [user, setUser] = useState(() => {
+    const stored = localStorage.getItem('user');
+    return stored ? JSON.parse(stored) : null;
   });
+  const [token, setToken] = useState(localStorage.getItem('token'));
 
-  // Ensure persistence and rehydration
-  useEffect(() => {
-    const stored = localStorage.getItem("auth");
-    if (stored) {
-      setAuth(JSON.parse(stored));
-    }
-  }, []);
-
-  useEffect(() => {
-    if (auth && (auth.token || auth.user)) {
-      localStorage.setItem("auth", JSON.stringify(auth));
-    }
-  }, [auth]);
-
-  const login = async (email, password, role) => {
-    if (useMock) {
-      // Mock login - skip API call
-      const mockAuth = {
-        token: "mock-token-123",
-        role,
-        user: {
-          name: "Test User",
-          role,
-          email,
+  const login = async (matric_number, password, role) => {
+    try {
+      const res = await apiFetch('/api/login/', {
+        method: 'POST',
+        body: JSON.stringify({ matric_number, password }),
+      });
+      if (res.token) {
+        setToken(res.token);
+        localStorage.setItem('token', res.token);
+        if (res.user) {
+          setUser(res.user);
+          localStorage.setItem('user', JSON.stringify(res.user));
+        } else {
+          const fallbackUser = { matric_number, role };
+          setUser(fallbackUser);
+          localStorage.setItem('user', JSON.stringify(fallbackUser));
         }
-      };
-      setAuth(mockAuth);
-      return {
-        success: true,
-        user: mockAuth.user,
-        token: mockAuth.token,
-      };
-    }
-
-    // Otherwise, call real API
-    // return await axios.post("/api/auth/login", { email, password, role });
-    // For now, just use mock
-    const mockAuth = {
-      token: "mock-token-123",
-      role,
-      user: {
-        name: "Test User",
-        role,
-        email,
+        return { success: true };
       }
-    };
-    setAuth(mockAuth);
-    return {
-      success: true,
-      user: mockAuth.user,
-      token: mockAuth.token,
-    };
+      return { success: false };
+    } catch (err) {
+      return { success: false };
+    }
   };
 
   const logout = () => {
-    setAuth({ token: null, role: null, user: null });
-    localStorage.removeItem("auth");
+    setToken(null);
+    setUser(null);
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    window.location.href = '/login';
   };
 
   return (
-    <AuthContext.Provider value={{ ...auth, user: auth.user, login, logout }}>
+    <AuthContext.Provider value={{ user, token, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
-};
+}
 
-export const useAuth = () => useContext(AuthContext); 
+export function useAuth() {
+  return useContext(AuthContext);
+} 

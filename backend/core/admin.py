@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Course, Assignment, CustomUser
+from .models import Course, Assignment, CustomUser, Submission
 
 # course = Course.objects.create(name='Data Structures and Algorithms', code='CSC106')
 # Assignment.objects.create(
@@ -14,3 +14,4 @@ from .models import Course, Assignment, CustomUser
 admin.site.register(CustomUser)
 admin.site.register(Course)
 admin.site.register(Assignment)
+admin.site.register(Submission)

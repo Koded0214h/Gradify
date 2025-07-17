@@ -1,0 +1,155 @@
+.student-layout-container {
+  min-height: 100vh;
+  display: flex;
+  background: #f7f7fa;
+}
+
+.student-sidebar {
+  width: 240px;
+  background: #fff;
+  border-right: 1px solid #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 1rem;
+  min-height: 100vh;
+}
+
+.student-sidebar-title {
+  margin-bottom: 2rem;
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: #7b2cbf;
+  letter-spacing: 1px;
+}
+
+.student-sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.student-sidebar-link {
+  padding: 0.7rem 1.2rem;
+  border-radius: 8px;
+  font-weight: 500;
+  color: #444;
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s;
+  margin-bottom: 2px;
+}
+.student-sidebar-link.active,
+.student-sidebar-link:hover {
+  background: #ede9fe;
+  color: #7b2cbf;
+}
+
+.student-sidebar-spacer {
+  flex-grow: 1;
+}
+
+.student-main-content {
+  flex: 1;
+  padding: 2.5rem 2rem;
+  overflow-y: auto;
+  background: #f7f7fa;
+  min-height: 100vh;
+}
+
+.student-logout-btn {
+  background: #dc2626;
+  color: #fff;
+  font-weight: 600;
+  padding: 0.7rem 0;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 1.5rem;
+  font-size: 1.08rem;
+  width: 100%;
+  transition: background 0.15s;
+}
+.student-logout-btn:hover {
+  background: #b91c1c;
+}
+
+.sticky-sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  align-self: flex-start;
+  z-index: 10;
+  background: #fff;
+  box-shadow: 2px 0 8px rgba(123,44,191,0.04);
+}
+
+@media (max-width: 900px) {
+  .student-layout-container {
+    flex-direction: column;
+  }
+  .student-sidebar {
+    width: 100%;
+    min-height: unset;
+    flex-direction: row;
+    align-items: center;
+    padding: 1rem;
+    border-right: none;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  .student-sidebar-title {
+    margin-bottom: 0;
+    margin-right: 2rem;
+  }
+  .student-sidebar-nav {
+    flex-direction: row;
+    gap: 1rem;
+  }
+  .student-main-content {
+    padding: 1.5rem 0.5rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .student-layout-container {
+    flex-direction: column;
+  }
+  .student-sidebar {
+    width: 100%;
+    min-height: unset;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0.7rem 0.3rem;
+    border-right: none;
+    border-bottom: 1px solid #e5e7eb;
+    position: static;
+    height: auto;
+    box-shadow: none;
+  }
+  .sticky-sidebar {
+    position: static;
+    height: auto;
+    box-shadow: none;
+  }
+  .student-sidebar-title {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    margin-right: 0;
+  }
+  .student-sidebar-nav {
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+  }
+  .student-sidebar-link {
+    font-size: 0.98rem;
+    padding: 0.5rem 0.7rem;
+    width: 100%;
+  }
+  .student-main-content {
+    padding: 0.7rem 0.2rem;
+  }
+  .student-logout-btn {
+    font-size: 0.98rem;
+    padding: 0.5rem 0;
+    margin-top: 1rem;
+  }
+} 

@@ -1,5 +1,6 @@
 annotated-types==0.7.0
 asgiref==3.8.1
+attrs==25.3.0
 beautifulsoup4==4.13.4
 cachetools==5.5.2
 certifi==2025.6.15
@@ -8,6 +9,7 @@ dj-database-url==3.0.0
 Django==5.2.3
 django-cors-headers==4.7.0
 djangorestframework==3.16.0
+drf-spectacular==0.28.0
 google==3.0.0
 google-ai-generativelanguage==0.6.15
 google-api-core==2.25.1
@@ -16,11 +18,14 @@ google-auth==2.40.3
 google-auth-httplib2==0.2.0
 google-generativeai==0.8.5
 googleapis-common-protos==1.70.0
-grpcio==1.73.1
+grpcio==1.71.2
 grpcio-status==1.71.0
 gunicorn==23.0.0
 httplib2==0.22.0
 idna==3.10
+inflection==0.5.1
+jsonschema==4.24.0
+jsonschema-specifications==2025.4.1
 packaging==25.0
 proto-plus==1.26.1
 protobuf==5.29.5
@@ -31,7 +36,11 @@ pydantic==2.11.7
 pydantic_core==2.33.2
 pyparsing==3.2.3
 python-decouple==3.8
+python-dotenv==1.1.1
+PyYAML==6.0.2
+referencing==0.36.2
 requests==2.32.4
+rpds-py==0.26.0
 rsa==4.9.1
 soupsieve==2.7
 sqlparse==0.5.3

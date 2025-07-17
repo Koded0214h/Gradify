@@ -4,9 +4,12 @@ import google.generativeai as genai
 GEMINI_API_KEY = "AIzaSyCNDDxOo8Cn0RCk2axHOHi4VfK1TtR2XSQ"
 genai.configure(api_key=GEMINI_API_KEY)
 
-def grade_with_gemini(assignment_title, code, max_score):
+# Updated: Accept assignment_instructions
+
+def grade_with_gemini(assignment_title, assignment_instructions, code, max_score):
     prompt = f"""You're a DSA lecturer. Grade the following student submission:
 Assignment: {assignment_title}
+Instructions: {assignment_instructions}
 Max Score: {max_score}
 Code:
 {code}

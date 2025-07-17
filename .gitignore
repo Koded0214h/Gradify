@@ -1,0 +1,33 @@
+# Node modules
+frontend/gradify-client/node_modules/
+frontend/gradify-client/gradify-client/node_modules/
+
+# Build output
+frontend/gradify-client/dist/
+
+# Environment variables
+frontend/gradify-client/.env
+backend/.env
+
+# Python
+backend/__pycache__/
+backend/staticfiles/
+backend/media/
+*.pyc
+
+# SQLite DB
+backend/db.sqlite3
+
+# VSCode
+.vscode/
+
+# System
+.DS_Store
+.env
+node_modules/
+
+# Logs
+*.log
+
+# Misc
+*.swp 

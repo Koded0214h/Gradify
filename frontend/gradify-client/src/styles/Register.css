@@ -1,0 +1,133 @@
+.register-wrapper {
+  min-height: 100vh;
+  background: var(--bg, #faf5ff);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.register-card {
+  background: var(--card, #fff);
+  padding: 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  max-width: 400px;
+  width: 100%;
+}
+
+.register-title {
+  text-align: center;
+  color: var(--primary, #7b2cbf);
+  font-weight: 700;
+  margin-bottom: 2rem;
+}
+
+.register-role-selector {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.register-role-option {
+  flex: 1;
+  text-align: center;
+  padding: 0.6rem;
+  margin: 0 0.25rem;
+  border-radius: 8px;
+  cursor: pointer;
+  background: var(--bg, #faf5ff);
+  color: var(--text, #1a1a1a);
+  font-weight: 600;
+  border: 1px solid var(--primaryLight, #9d4edd);
+  transition: background 0.15s, color 0.15s;
+}
+.register-role-option.active {
+  background: var(--primary, #7b2cbf);
+  color: #fff;
+}
+
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.register-input {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--primaryLight, #9d4edd);
+  border-radius: 8px;
+  font-size: 1rem;
+  background: transparent;
+  color: var(--text, #1a1a1a);
+}
+.register-input::placeholder {
+  color: var(--muted, #999);
+}
+
+.register-submit {
+  background: var(--secondary, #ffb703);
+  color: black;
+  font-weight: 600;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  transition: all 0.2s;
+}
+.register-submit:disabled {
+  background: var(--muted, #ccc);
+  color: #666;
+  cursor: not-allowed;
+}
+.register-submit:not(:disabled):hover {
+  background: var(--primary, #7b2cbf);
+  color: white;
+}
+
+.register-error-text {
+  color: var(--error, #ef476f);
+  font-size: 0.9rem;
+}
+
+.register-footer-text {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+}
+
+.register-link {
+  color: var(--primary, #7b2cbf);
+  text-decoration: none;
+  font-weight: 500;
+}
+.register-link:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+  .register-wrapper {
+    padding: 0.5rem;
+  }
+  .register-card {
+    padding: 1.2rem 0.5rem;
+    max-width: 100vw;
+  }
+  .register-title {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+  }
+  .register-role-option {
+    font-size: 0.98rem;
+    padding: 0.5rem;
+  }
+  .register-input, .register-submit {
+    font-size: 0.98rem;
+    padding: 0.6rem 0.7rem;
+  }
+  .register-footer-text {
+    font-size: 0.85rem;
+    margin-top: 1rem;
+  }
+} 

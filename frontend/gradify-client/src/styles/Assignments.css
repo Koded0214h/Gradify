@@ -1,0 +1,217 @@
+.assignments-container {
+  max-width: 1100px;
+  margin: 2rem auto;
+  background: #f8fafc;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(123,44,191,0.07);
+  padding: 2.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 220px;
+}
+
+.assignments-title {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #3d246c;
+  margin-bottom: 2rem;
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+.assignments-loading,
+.assignments-error,
+.assignments-empty {
+  text-align: center;
+  padding: 3rem 0;
+  color: #64748b;
+  font-size: 1.1rem;
+}
+
+.assignments-error {
+  color: #ef4444;
+}
+
+.assignments-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 2rem;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.assignment-card {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 2px 12px rgba(123,44,191,0.08);
+  overflow: hidden;
+  transition: box-shadow 0.2s, transform 0.2s;
+  display: flex;
+  flex-direction: column;
+  min-height: 320px;
+}
+.assignment-card:hover {
+  box-shadow: 0 8px 32px rgba(123,44,191,0.13);
+  transform: translateY(-4px) scale(1.02);
+}
+
+.assignment-header {
+  background: linear-gradient(90deg, #7b2cbf 0%, #5a189a 100%);
+  color: #fff;
+  padding: 1.2rem 1.5rem 1rem 1.5rem;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+.assignment-title-section {
+  flex: 1;
+}
+.assignment-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 0.2rem 0;
+  color: #fff;
+}
+.assignment-course {
+  font-size: 0.98rem;
+  color: #e0c3fc;
+  font-weight: 500;
+}
+.assignment-status-badge {
+  padding: 0.3rem 1.1rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #fff;
+  background: #f59e0b;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  align-self: flex-start;
+  margin-left: 1rem;
+}
+.assignment-status-badge.active {
+  background: #22c55e;
+}
+.assignment-status-badge.pending {
+  background: #f59e0b;
+}
+.assignment-status-badge.graded {
+  background: #6366f1;
+}
+.assignment-status-badge.submitted {
+  background: #22c55e;
+}
+
+.assignment-content {
+  padding: 1.3rem 1.5rem 0.5rem 1.5rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.assignment-instructions {
+  color: #444;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 0 0 1.1rem 0;
+  flex: 1;
+}
+.assignment-meta {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 1.1rem;
+}
+.meta-item {
+  font-size: 0.98rem;
+  color: #7b2cbf;
+  font-weight: 600;
+}
+.meta-label {
+  color: #888;
+  font-weight: 500;
+  margin-right: 0.3rem;
+}
+.assignment-actions {
+  display: flex;
+  gap: 0.7rem;
+  padding: 1rem 1.5rem 1.3rem 1.5rem;
+  border-top: 1px solid #f3e8ff;
+  background: #faf6ff;
+}
+.assignment-view-btn,
+.assignment-submit-btn {
+  flex: 1;
+  padding: 0.7rem 0;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+}
+.assignment-view-btn {
+  background: #f3e8ff;
+  color: #7b2cbf;
+  border: 1.5px solid #e0c3fc;
+}
+.assignment-view-btn:hover {
+  background: #e0c3fc;
+  color: #5a189a;
+}
+.assignment-submit-btn {
+  background: linear-gradient(90deg, #7b2cbf 0%, #5a189a 100%);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(123,44,191,0.08);
+}
+.assignment-submit-btn:hover {
+  background: linear-gradient(90deg, #5a189a 0%, #7b2cbf 100%);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(123,44,191,0.13);
+}
+
+@media (max-width: 800px) {
+  .assignments-container {
+    padding: 1rem 0.2rem;
+  }
+  .assignments-title {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+  }
+  .assignments-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .assignment-header, .assignment-content, .assignment-actions {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  .assignment-card {
+    min-height: unset;
+    padding: 0.5rem 0;
+  }
+  .assignment-title {
+    font-size: 1.05rem;
+  }
+  .assignment-instructions {
+    font-size: 0.95rem;
+  }
+  .assignment-view-btn, .assignment-submit-btn {
+    font-size: 0.95rem;
+    padding: 0.6rem 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .assignments-title {
+    font-size: 1.1rem;
+  }
+  .assignment-header, .assignment-content, .assignment-actions {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+  .assignment-view-btn, .assignment-submit-btn {
+    font-size: 0.9rem;
+    padding: 0.5rem 0;
+  }
+} 

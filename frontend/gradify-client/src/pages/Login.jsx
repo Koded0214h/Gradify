@@ -1,199 +1,114 @@
-import styled from "styled-components";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import "../styles/Login.css";
 
 const LoginPage = () => {
   const [role, setRole] = useState("student");
-  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [matricNumber, setMatricNumber] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState({});
+  const [nonFieldError, setNonFieldError] = useState("");
   
   const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    if (!email || !password) {
-      setError("All fields are required.");
+    setFieldErrors({});
+    setNonFieldError("");
+    if (!matricNumber || !password) {
+      setFieldErrors({
+        ...(matricNumber ? {} : { matric_number: "Matric number is required." }),
+        ...(password ? {} : { password: "Password is required." })
+      });
       return;
     }
-
     setIsLoading(true);
-    setError("");
-
     try {
-      const result = await login(email, password, role);
-      
+      const result = await login(matricNumber, password, role);
       if (result.success) {
-        // Navigate based on role
         if (role === "student") {
-          navigate("/student");
+          navigate("/student/assignments");
         } else if (role === "lecturer") {
           navigate("/lecturer");
         }
       } else {
-        setError("Login failed. Please try again.");
+        setNonFieldError("Login failed. Please check your credentials.");
       }
     } catch (err) {
-      setError("An error occurred. Please try again.");
+      let fieldErrs = {};
+      let nonField = "An error occurred. Please try again.";
+      try {
+        const data = JSON.parse(err.message);
+        if (typeof data === 'object') {
+          for (const [k, v] of Object.entries(data)) {
+            if (k === 'matric_number' || k === 'password') {
+              fieldErrs[k] = Array.isArray(v) ? v.join(', ') : v;
+            } else {
+              nonField = (Array.isArray(v) ? v.join(', ') : v) || nonField;
+            }
+          }
+        }
+      } catch {}
+      setFieldErrors(fieldErrs);
+      setNonFieldError(nonField);
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <Wrapper>
-      <Card>
-        <Title>Login to Gradify</Title>
+    <div className="login-wrapper">
+      <div className="login-card">
+        <h2 className="login-title">Login to Gradify</h2>
 
-        <RoleSelector>
-          <RoleOption
-            active={role === "student"}
+        <div className="login-role-selector">
+          <div
+            className={`login-role-option${role === "student" ? " active" : ""}`}
             onClick={() => setRole("student")}
           >
             Student
-          </RoleOption>
-          <RoleOption
-            active={role === "lecturer"}
+          </div>
+          <div
+            className={`login-role-option${role === "lecturer" ? " active" : ""}`}
             onClick={() => setRole("lecturer")}
           >
             Lecturer
-          </RoleOption>
-        </RoleSelector>
+          </div>
+        </div>
 
-        <Form onSubmit={handleSubmit}>
-          <Input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+        <form className="login-form" onSubmit={handleSubmit}>
+          <input
+            className="login-input"
+            type="text"
+            placeholder="Matric Number"
+            value={matricNumber}
+            onChange={(e) => setMatricNumber(e.target.value)}
           />
-          <Input
+          {fieldErrors.matric_number && <p className="login-error-text">{fieldErrors.matric_number}</p>}
+          <input
+            className="login-input"
             type="password"
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          {error && <ErrorText>{error}</ErrorText>}
-          <Submit type="submit" disabled={isLoading}>
+          {fieldErrors.password && <p className="login-error-text">{fieldErrors.password}</p>}
+          {nonFieldError && <p className="login-error-text">{nonFieldError}</p>}
+          <button className="login-submit" type="submit" disabled={isLoading}>
             {isLoading ? "Logging in..." : "Login"}
-          </Submit>
-        </Form>
+          </button>
+        </form>
 
-        <FooterText>
-          Don't have an account? <StyledLink to="/register">Register</StyledLink>
-        </FooterText>
-      </Card>
-    </Wrapper>
+        <p className="login-footer-text">
+          Don't have an account? <Link className="login-link" to="/register">Register</Link>
+        </p>
+      </div>
+    </div>
   );
 };
 
 export default LoginPage;
-
-const Wrapper = styled.div`
-  min-height: 100vh;
-  background: ${({ theme }) => theme.bg};
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 2rem;
-`;
-
-const Card = styled.div`
-  background: ${({ theme }) => theme.card};
-  padding: 2.5rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-  max-width: 400px;
-  width: 100%;
-`;
-
-const Title = styled.h2`
-  text-align: center;
-  color: ${({ theme }) => theme.primary};
-  font-weight: 700;
-  margin-bottom: 2rem;
-`;
-
-const RoleSelector = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 1.5rem;
-`;
-
-const RoleOption = styled.div`
-  flex: 1;
-  text-align: center;
-  padding: 0.6rem;
-  margin: 0 0.25rem;
-  border-radius: 8px;
-  cursor: pointer;
-  background: ${({ active, theme }) =>
-    active ? theme.primary : theme.bg};
-  color: ${({ active, theme }) =>
-    active ? "#fff" : theme.text};
-  font-weight: 600;
-  border: 1px solid ${({ theme }) => theme.primaryLight};
-`;
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-`;
-
-const Input = styled.input`
-  padding: 0.75rem 1rem;
-  border: 1px solid ${({ theme }) => theme.primaryLight};
-  border-radius: 8px;
-  font-size: 1rem;
-  background: transparent;
-  color: ${({ theme }) => theme.text};
-
-  &::placeholder {
-    color: ${({ theme }) => theme.muted || "#999"};
-  }
-`;
-
-const Submit = styled.button`
-  background: ${({ theme, disabled }) => 
-    disabled ? theme.muted || "#ccc" : theme.secondary};
-  color: ${({ disabled }) => disabled ? "#666" : "black"};
-  font-weight: 600;
-  padding: 0.75rem;
-  border: none;
-  border-radius: 8px;
-  cursor: ${({ disabled }) => disabled ? "not-allowed" : "pointer"};
-  margin-top: 0.5rem;
-  transition: all 0.2s;
-
-  &:hover:not(:disabled) {
-    background: ${({ theme }) => theme.primary};
-    color: white;
-  }
-`;
-
-const ErrorText = styled.p`
-  color: ${({ theme }) => theme.error};
-  font-size: 0.9rem;
-`;
-
-const FooterText = styled.p`
-  text-align: center;
-  margin-top: 1.5rem;
-  font-size: 0.9rem;
-`;
-
-const StyledLink = styled(Link)`
-  color: ${({ theme }) => theme.primary};
-  text-decoration: none;
-  font-weight: 500;
-
-  &:hover {
-    text-decoration: underline;
-  }
-`;
   

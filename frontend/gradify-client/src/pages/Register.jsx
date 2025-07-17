@@ -1,7 +1,8 @@
-import styled from "styled-components";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { apiFetch } from "../api";
+import "../styles/Register.css";
 
 const RegisterPage = () => {
   const [role, setRole] = useState("student");
@@ -38,202 +39,119 @@ const RegisterPage = () => {
     setError("");
 
     try {
-      // For registration, we'll use the same login function since we're in mock mode
-      // In a real app, you'd call a separate register API
-      const result = await login(email, password, role);
-      
-      if (result.success) {
-        // Navigate based on role
+      // Split full name into first and last name
+      const [first_name, ...rest] = fullName.trim().split(' ');
+      const last_name = rest.length > 0 ? rest.join(' ') : '-'; // Ensure last_name is never blank
+      const payload = {
+        email,
+        first_name: first_name || '-', // Ensure first_name is never blank
+        last_name,
+        password,
+        password2: confirmPassword,
+        role,
+        ...(role === 'student' ? { matric_number: matricNumber } : {}),
+      };
+      const res = await apiFetch('/api/register/', {
+        method: 'POST',
+        body: JSON.stringify(payload),
+      });
+      // On success, log in the user
+      const loginResult = await login(email, password, role);
+      if (loginResult.success) {
         if (role === "student") {
-          navigate("/student");
+          navigate("/student/assignments");
         } else if (role === "lecturer") {
           navigate("/lecturer");
         }
       } else {
-        setError("Registration failed. Please try again.");
+        setError("Registration succeeded but login failed.");
       }
     } catch (err) {
-      setError("An error occurred. Please try again.");
+      // Try to parse and display backend errors
+      let msg = "Registration failed. Please check your details.";
+      try {
+        const data = JSON.parse(err.message);
+        if (typeof data === 'object') {
+          msg = Object.entries(data).map(([k, v]) => `${k}: ${Array.isArray(v) ? v.join(', ') : v}`).join(' | ');
+        }
+      } catch {}
+      setError(msg);
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <Wrapper>
-      <Card>
-        <Title>Register for Gradify</Title>
+    <div className="register-wrapper">
+      <div className="register-card">
+        <h2 className="register-title">Register for Gradify</h2>
 
-        <RoleSelector>
-          <RoleOption
-            active={role === "student"}
+        <div className="register-role-selector">
+          <div
+            className={`register-role-option${role === "student" ? " active" : ""}`}
             onClick={() => setRole("student")}
           >
             Student
-          </RoleOption>
-          <RoleOption
-            active={role === "lecturer"}
+          </div>
+          <div
+            className={`register-role-option${role === "lecturer" ? " active" : ""}`}
             onClick={() => setRole("lecturer")}
           >
             Lecturer
-          </RoleOption>
-        </RoleSelector>
+          </div>
+        </div>
 
-        <Form onSubmit={handleSubmit}>
-          <Input
+        <form className="register-form" onSubmit={handleSubmit}>
+          <input
+            className="register-input"
             type="text"
             placeholder="Full Name"
             value={fullName}
             onChange={(e) => setFullName(e.target.value)}
           />
-          
           {role === "student" && (
-            <Input
+            <input
+              className="register-input"
               type="text"
               placeholder="Matric Number"
               value={matricNumber}
               onChange={(e) => setMatricNumber(e.target.value)}
             />
           )}
-          
-          <Input
+          <input
+            className="register-input"
             type="email"
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
-          
-          <Input
+          <input
+            className="register-input"
             type="password"
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          
-          <Input
+          <input
+            className="register-input"
             type="password"
             placeholder="Confirm Password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
-          
-          {error && <ErrorText>{error}</ErrorText>}
-          <Submit type="submit" disabled={isLoading}>
+          {error && <p className="register-error-text">{error}</p>}
+          <button className="register-submit" type="submit" disabled={isLoading}>
             {isLoading ? "Registering..." : "Register"}
-          </Submit>
-        </Form>
+          </button>
+        </form>
 
-        <FooterText>
-          Already have an account? <StyledLink to="/login">Login</StyledLink>
-        </FooterText>
-      </Card>
-    </Wrapper>
+        <p className="register-footer-text">
+          Already have an account? <Link className="register-link" to="/login">Login</Link>
+        </p>
+      </div>
+    </div>
   );
 };
 
 export default RegisterPage;
-
-const Wrapper = styled.div`
-  min-height: 100vh;
-  background: ${({ theme }) => theme.bg};
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 2rem;
-`;
-
-const Card = styled.div`
-  background: ${({ theme }) => theme.card};
-  padding: 2.5rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-  max-width: 400px;
-  width: 100%;
-`;
-
-const Title = styled.h2`
-  text-align: center;
-  color: ${({ theme }) => theme.primary};
-  font-weight: 700;
-  margin-bottom: 2rem;
-`;
-
-const RoleSelector = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 1.5rem;
-`;
-
-const RoleOption = styled.div`
-  flex: 1;
-  text-align: center;
-  padding: 0.6rem;
-  margin: 0 0.25rem;
-  border-radius: 8px;
-  cursor: pointer;
-  background: ${({ active, theme }) =>
-    active ? theme.primary : theme.bg};
-  color: ${({ active, theme }) =>
-    active ? "#fff" : theme.text};
-  font-weight: 600;
-  border: 1px solid ${({ theme }) => theme.primaryLight};
-`;
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-`;
-
-const Input = styled.input`
-  padding: 0.75rem 1rem;
-  border: 1px solid ${({ theme }) => theme.primaryLight};
-  border-radius: 8px;
-  font-size: 1rem;
-  background: transparent;
-  color: ${({ theme }) => theme.text};
-
-  &::placeholder {
-    color: ${({ theme }) => theme.muted || "#999"};
-  }
-`;
-
-const Submit = styled.button`
-  background: ${({ theme, disabled }) => 
-    disabled ? theme.muted || "#ccc" : theme.secondary};
-  color: ${({ disabled }) => disabled ? "#666" : "black"};
-  font-weight: 600;
-  padding: 0.75rem;
-  border: none;
-  border-radius: 8px;
-  cursor: ${({ disabled }) => disabled ? "not-allowed" : "pointer"};
-  margin-top: 0.5rem;
-  transition: all 0.2s;
-
-  &:hover:not(:disabled) {
-    background: ${({ theme }) => theme.primary};
-    color: white;
-  }
-`;
-
-const ErrorText = styled.p`
-  color: ${({ theme }) => theme.error};
-  font-size: 0.9rem;
-`;
-
-const FooterText = styled.p`
-  text-align: center;
-  margin-top: 1.5rem;
-  font-size: 0.9rem;
-`;
-
-const StyledLink = styled(Link)`
-  color: ${({ theme }) => theme.primary};
-  text-decoration: none;
-  font-weight: 500;
-
-  &:hover {
-    text-decoration: underline;
-  }
-`;
   
